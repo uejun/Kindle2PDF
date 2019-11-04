@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import subprocess
 from subprocess import Popen, PIPE
-
+import time
 import cv2
 import numpy as np
 
@@ -11,8 +11,10 @@ from pdf import PDFWriter
 
 
 def is_same_img(img1, img2):
+    # 全く同じだったらゼロ画像になるはず
     mask = cv2.absdiff(img1, img2)
     mask_gray = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
+    # 全く同じだったらゼロじゃないところをカウントするとゼロになるはず．
     return not cv2.countNonZero(mask_gray)
 
 
@@ -84,6 +86,9 @@ class ImageCapture:
         if not self.cache_dir_path.is_dir():
             self.cache_dir_path.mkdir()
 
+    def get_current_timestamp(self):
+        return self.cache_image_path.stat().st_mtime
+
     @classmethod
     def _screen_capture(cls, window_id):
         subprocess.call(["screencapture", "-l", str(window_id),
@@ -144,7 +149,7 @@ class Pager(object):
         else:
             raise ValueError("unknown direction")
 
-        script = "tell application " + "\"Kindle\""
+        script = "tell application " + "\"" + app_name + "\""
         script += "\n    activate"
         script += "\n    tell application \"System Events\""
         script += "\n        key code " + key_code
@@ -158,6 +163,8 @@ class CaptureController(object):
     def __init__(self, app_name, direction):
         self.app_name = app_name
         self.pager = Pager(app_name, direction)
+
+        self.previous_timestamp = None
 
     def start(self):
 
@@ -185,12 +192,19 @@ class CaptureController(object):
             # ページをめくる
             self.pager.go_next()
 
+            # 別プロセスで画像の保存とページめくりを行うので,
+            # ちゃんと前のキャプチャが保存されるかを確認する
+            if self.previous_timestamp is not None:
+                if self.previous_timestamp == cap.get_current_timestamp():
+                    time.sleep(1.0)
+
             # キャプチャ画像を取得
             crop_img = cap.crop_capture()
 
             # 前ページと同じかどうかチェック
             # 同じ場合は終了
             if i > 0 and is_same_img(current_img, crop_img):
+                print("Done because of same image.")
                 break
 
             # 1ページごとに画像をPDFに変換し，ローカルに保存
@@ -200,6 +214,8 @@ class CaptureController(object):
 
             # 本ページ画像をキャッシュしておく
             current_img = crop_img.copy()
+
+            self.previous_timestamp = cap.get_current_timestamp()
 
         # すべてのPDFを統合して，一つのPDFとする
         save_path = Path(os.path.join("dist", "result.pdf"))
