@@ -13,6 +13,8 @@ MacのKindleアプリで表示している書籍をPDF化するPythonアプリ�
 
 必要条件: Python3.6+
 
+python3.8はダメ. 
+
 ### ①プロジェクトのダウンロード  
 ```
 git clone https://github.com/uejun/Kindle2PDF
@@ -23,7 +25,14 @@ git clone https://github.com/uejun/Kindle2PDF
 !pip install -r requirements.txt
 ```
 
-### ③実行コマンド
+### ③mkdir 
+
+```
+mkdir .cache_img
+mkdir dist
+```
+
+### ④実行コマンド
 
 ```
 !python make_pdf.py 
@@ -38,11 +47,11 @@ git clone https://github.com/uejun/Kindle2PDF
 
 ```
 
-### ④キャプチャするエリアをドラッグで指定する.  
+### ⑤キャプチャするエリアをドラッグで指定する.  
 
 Kindleのスクリーンキャプチャ画面が表示されるので，
 ドラッグにより領域を指定する.  
 
  Enterキー押下で, KindleのPDF取込がスタートする
 
-### ⑤ 取込終了後，distフォルダ（プロジェクト内）にPDFが出力される. 
+### ⑥ 取込終了後，distフォルダ（プロジェクト内）にPDFが出力される. 

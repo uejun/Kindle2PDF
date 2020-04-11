@@ -36,7 +36,7 @@ class ROI(object):
 
 class CaptureRegion(object):
     def __init__(self):
-        self.popup_window_resize_rate = 3.0
+        self.popup_window_resize_rate = 1.5
 
         self.roi = None
 
