@@ -3,4 +3,4 @@ Click==7.0
 pytest==4.6.2
 opencv-python==4.2.0.34
 pdfrw==0.4
-Pillow==6.0.0
+Pillow==6.2.2
