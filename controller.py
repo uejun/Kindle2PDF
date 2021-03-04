@@ -128,6 +128,8 @@ class Pager(object):
         p = Popen(['/usr/bin/osascript', '-'] + args,
                   stdin=PIPE, stdout=PIPE, stderr=PIPE)
         stdout, stderr = p.communicate(self._script.encode('utf-8'))
+        print(stdout.decode())
+        print(stderr.decode())
 
 
     @classmethod

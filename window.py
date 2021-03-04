@@ -6,6 +6,8 @@ class WindowManager(object):
     @classmethod
     def get_window_id(cls, app_name):
         window_info_list = cls._get_window_info_list()
+        for v in window_info_list:
+            print(v)
         window_info_list = cls._filter_by_name(window_info_list, app_name)
         max_window = cls._max_area_window(window_info_list)
         return cls._window_id(max_window)
@@ -20,7 +22,7 @@ class WindowManager(object):
     @classmethod
     def _filter_by_name(cls, window_info_list, app_name):
         return [v for v in window_info_list
-                if v['kCGWindowOwnerName'] == app_name]
+                if v.get('kCGWindowOwnerName', '') == app_name]
 
     @classmethod
     def _max_area_window(cls, window_info_list):
