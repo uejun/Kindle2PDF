@@ -198,7 +198,7 @@ class CaptureController(object):
             # ちゃんと前のキャプチャが保存されるかを確認する
             if self.previous_timestamp is not None:
                 if self.previous_timestamp == cap.get_current_timestamp():
-                    time.sleep(1.0)
+                    time.sleep(3.0)
 
             # キャプチャ画像を取得
             crop_img = cap.crop_capture()
