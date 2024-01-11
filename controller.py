@@ -150,13 +150,22 @@ class Pager(object):
             key_code = "124"
         else:
             raise ValueError("unknown direction")
-
-        script = "tell application " + "\"" + app_name + "\""
+        script = "tell application \"Kindle\""
         script += "\n    activate"
-        script += "\n    tell application \"System Events\""
+        script += "\nend tell"
+        script += "\n delay 1"
+        script += "\n tell application \"System Events\""
+        script += "\n    tell process " + "\"" + app_name + "\""
         script += "\n        key code " + key_code
         script += "\n    end tell"
-        script += "\nend tell"
+        script += "\n end tell"
+
+        # script = "tell process " + "\"" + app_name + "\""
+        # script += "\n    activate"
+        # script += "\n    tell application \"System Events\""
+        # script += "\n        key code " + key_code
+        # script += "\n    end tell"
+        # script += "\nend tell"
 
         return script
 
@@ -174,8 +183,9 @@ class CaptureController(object):
 
         # Retrieve window id of the application.
         window_id = WindowManager.get_window_id(self.app_name)
-
+        print(self.app_name, "Window", window_id)
         capture_image_path = ".cache_img/tmp.png"
+        Path(capture_image_path).parent.mkdir(exist_ok=True, parents=True)
         _screen_capture(window_id, capture_image_path)
 
         # Specify the capture area.
@@ -205,7 +215,7 @@ class CaptureController(object):
 
             # 前ページと同じかどうかチェック
             # 同じ場合は終了
-            if i > 0 and is_same_img(current_img, crop_img):
+            if i > 1 and is_same_img(current_img, crop_img):
                 print("Done because of same image.")
                 break
 
