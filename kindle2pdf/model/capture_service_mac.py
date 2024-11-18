@@ -41,6 +41,7 @@ class CaptureControllerForMac(CaptureServiceBase):
                                dtype=np.uint8)
 
         self.pager = PagerForMac(self.app_name, self.direction)
+        self.previous_timestamp = None
 
         for i in range(0, self.MAX_PAGE):
 

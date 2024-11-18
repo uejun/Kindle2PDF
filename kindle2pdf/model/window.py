@@ -1,7 +1,8 @@
+import Quartz
 
 class WindowManager(object):
 
-    import Quartz
+
 
     @classmethod
     def get_window_id(cls, app_name):

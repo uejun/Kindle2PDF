@@ -10,7 +10,7 @@ class CaptureServiceBase:
         if save_format == OutputFormat.PDF:
             self.writer: CaptureWriter = PDFWriter()
         else:
-            self.writer: CaptureWriter = ImageWriter()
+            self.writer: CaptureWriter = ImageWriter(save_format)
         self.pager = None
 
         self.MAX_PAGE = 3000

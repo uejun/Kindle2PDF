@@ -72,6 +72,10 @@ class ImageWriter(CaptureWriter):
         self._save_as_image(save_path, img_pillow)
 
     def _save_as_image(self, path: Path, img_pillow: Image):
+        # 現在のディレクトリを取得
+        current_dir = Path.cwd()
+        path = current_dir.joinpath(path)
+        path.parent.mkdir(exist_ok=True, parents=True)
         # Pillowを使って保存
         if self.format == OutputFormat.PNG:
             img_pillow.save(str(path), "PNG", quality=100)
@@ -81,6 +85,7 @@ class ImageWriter(CaptureWriter):
             img_pillow.save(str(path), "BMP", quality=100)
         else:
             raise ValueError(f"Invalid format: {self.format}")
+        print(f"Image saved to {path}")
 
     def handle_finish(self):
         pass
