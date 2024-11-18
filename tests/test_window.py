@@ -1,4 +1,4 @@
-from window import WindowManager
+from kindle2pdf.model import WindowManager
 
 
 def test_retrieve_window_list():

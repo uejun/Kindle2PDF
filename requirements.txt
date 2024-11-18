@@ -5,3 +5,4 @@ pdfrw
 Pillow
 pygetwindow
 pyautogui
+inject

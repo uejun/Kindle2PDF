@@ -1,6 +1,0 @@
-pyobjc-framework-Quartz
-Click
-pytest
-opencv-python
-pdfrw
-Pillow
